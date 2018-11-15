@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Nav-electri</string>
+    <string name="navigation">Navigation</string>
+    <string name="charging_stations">Stations</string>
+    <string name="attractions">Attractions</string>
+    <string name="settings">Settings</string>
+</resources>
