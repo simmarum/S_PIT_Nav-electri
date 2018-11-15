@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,10 +18,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.navigation_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.stations_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.attractions_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.settings_icon));
+
+        View tab_navigation = getLayoutInflater().inflate(R.layout.my_main_tab, null);
+        tab_navigation.findViewById(R.id.icon).setBackgroundResource(R.drawable.navigation_icon);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tab_navigation));
+
+        View tab_stations = getLayoutInflater().inflate(R.layout.my_main_tab, null);
+        tab_stations.findViewById(R.id.icon).setBackgroundResource(R.drawable.stations_icon);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tab_stations));
+
+        View tab_attractions = getLayoutInflater().inflate(R.layout.my_main_tab, null);
+        tab_attractions.findViewById(R.id.icon).setBackgroundResource(R.drawable.attractions_icon);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tab_attractions));
+
+        View tab_settings = getLayoutInflater().inflate(R.layout.my_main_tab, null);
+        tab_settings.findViewById(R.id.icon).setBackgroundResource(R.drawable.settings_icon);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tab_settings));
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
