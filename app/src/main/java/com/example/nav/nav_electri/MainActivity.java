@@ -1,22 +1,29 @@
 package com.example.nav.nav_electri;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        Mapbox.getInstance(getApplicationContext(), "pk.eyJ1Ijoic2ltbWFydW0iLCJhIjoiY2pvazQ2aTc3MGI1bzNwbzFtbDZvOGJqZyJ9.o5xHndqBvRXIVWQ_9yHiAQ");
+        Mapbox.getTelemetry().setUserTelemetryRequestState(false);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
         View tab_navigation = getLayoutInflater().inflate(R.layout.my_main_tab, null);
@@ -60,19 +67,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }
