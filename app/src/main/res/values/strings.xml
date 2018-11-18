@@ -16,4 +16,5 @@
     <string name="no_open_hours">No information about open hours</string>
     <string name="show_attraction">Show list attractions</string>
     <string name="hide_attraction">Hide list attractions</string>
+    <string name="distance">Distance:</string>
 </resources>

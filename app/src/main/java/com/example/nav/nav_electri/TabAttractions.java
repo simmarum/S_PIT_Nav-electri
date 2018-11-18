@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -23,6 +24,9 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TabAttractions extends Fragment {
@@ -35,10 +39,23 @@ public class TabAttractions extends Fragment {
     private Button myButton;
     private View myView;
     private boolean isUp;
+    private ListView attrListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentLayout = inflater.inflate(R.layout.attractions, container, false);
+        myView = fragmentLayout.findViewById(R.id.my_attr_view);
+        myButton = fragmentLayout.findViewById(R.id.my_show_attr_button);
+        myButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSlideViewAttrButtonClick(v);
+            }
+        });
+        // initialize as invisible (could also do in xml)
+        myView.setVisibility(View.INVISIBLE);
+        isUp = false;
+
         markerPosition = new MarkerPosition(getContext());
 
         miniMap = (MapView) fragmentLayout.findViewById(R.id.mapView_attr);
@@ -58,23 +75,31 @@ public class TabAttractions extends Fragment {
                             .icon(IconFactory.getInstance(getContext()).fromResource(attraction.icon))
                     );
                 }
+                TabAttractions.this.setAttrListView();
             }
 
         });
-        myView = fragmentLayout.findViewById(R.id.my_attr_view);
-        myButton = fragmentLayout.findViewById(R.id.my_show_attr_button);
-        myButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSlideViewAttrButtonClick(v);
-            }
-        });
-        // initialize as invisible (could also do in xml)
-        myView.setVisibility(View.INVISIBLE);
-        isUp = false;
+
         return fragmentLayout;
     }
 
+    public void setAttrListView(){
+        ArrayList<AttractionPosition> attraction_list = markerPosition.getAttractionList();
+        LatLng origin_pos = new LatLng(this.originLocation.getLongitude(), this.originLocation.getLatitude());
+
+        for(int i=0;i<attraction_list.size();i++){
+            attraction_list.get(i).setDistance(origin_pos.distanceTo(new LatLng(attraction_list.get(i).getLon(),attraction_list.get(i).getLat())));
+        }
+        Collections.sort(attraction_list, new Comparator<AttractionPosition>() {
+            @Override
+            public int compare(AttractionPosition o1, AttractionPosition o2) {
+                return (o1.getDistance() < o2.getDistance() ) ? -1: (o1.getDistance() > o2.getDistance()) ? 1:0;
+
+            }
+        });
+        attrListView = (ListView) fragmentLayout.findViewById(R.id.my_attr_list_view);
+        attrListView.setAdapter(new Attraction_Adapter(this.getContext(), attraction_list));
+    }
     // slide the view from below itself to the current position
     public void slideUp(View view){
         Log.d("MMM","323232");
