@@ -54,12 +54,12 @@ public class TabNavigation extends Fragment {
     private DirectionsRoute currentRoute;
     private NavigationMapRoute navigationMapRoute;
     private Button button;
-
+    MarkerPosition markerPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentLayout = inflater.inflate(R.layout.navigation, container, false);
-
+        markerPosition = new MarkerPosition(getContext());
 
         miniMap = (MapView) fragmentLayout.findViewById(R.id.mapView);
         miniMap.onCreate(savedInstanceState);
@@ -73,16 +73,13 @@ public class TabNavigation extends Fragment {
 
                 enableLocationComponent(TabNavigation.this.mapboxMap);
 //                // One way to add a marker view
-
-                for (Position station : MarkerPosition.getStationList()) {
-                    Log.i("MMM", station.toString());
+                for (Position station : markerPosition.getStationList()) {
                     TabNavigation.this.mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(station.lat, station.lon))
                             .title(station.title)
-                            .snippet(station.title)
+                            .snippet(station.snip)
                             .icon(IconFactory.getInstance(getContext()).fromResource(station.icon))
                     );
-                    Log.i("MMM", station.toString());
                 }
 
                 originCoord = new LatLng(originLocation.getLatitude(), originLocation.getLongitude());
@@ -124,7 +121,7 @@ public class TabNavigation extends Fragment {
         double min_dist = Double.POSITIVE_INFINITY;
         LatLng origin_pos = new LatLng(origin.longitude(), origin.latitude());
         LatLng dest_pos = new LatLng(destination.longitude(), destination.latitude());
-        ArrayList<Position> all_stations = MarkerPosition.getStationList();
+        ArrayList<Position> all_stations = markerPosition.getStationList();
         for (int i = 0; i < all_stations.size(); i++) {
             LatLng tmp_station = new LatLng(all_stations.get(i).getLon(), all_stations.get(i).getLat());
             double tmp_dist = origin_pos.distanceTo(tmp_station) + tmp_station.distanceTo(dest_pos);

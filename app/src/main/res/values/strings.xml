@@ -7,4 +7,9 @@
     <string name="user_location_permission_explanation">We want your localization</string>
     <string name="user_location_permission_not_granted">We have NO your location</string>
     <string name="start_navigation">Start navigation</string>
+    <string name="no_number_phone">No number</string>
+    <string name="no_empty_place">No information about place</string>
+    <string name="empty_place_holder">Empty place: </string>
+    <string name="phone_number_holder">Phone: </string>
+    <string name="time_to_charge_holder">Time to charge: </string>
 </resources>
