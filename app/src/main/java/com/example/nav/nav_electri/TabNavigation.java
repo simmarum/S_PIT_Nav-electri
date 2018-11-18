@@ -41,7 +41,7 @@ import retrofit2.Response;
 
 public class TabNavigation extends Fragment {
     private static final String TAG = "DirectionsActivity";
-    View fragmentLayout;
+    private View fragmentLayout;
     private MapView miniMap;
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
@@ -54,7 +54,7 @@ public class TabNavigation extends Fragment {
     private DirectionsRoute currentRoute;
     private NavigationMapRoute navigationMapRoute;
     private Button button;
-    MarkerPosition markerPosition;
+    private MarkerPosition markerPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,6 +79,14 @@ public class TabNavigation extends Fragment {
                             .title(station.title)
                             .snippet(station.snip)
                             .icon(IconFactory.getInstance(getContext()).fromResource(station.icon))
+                    );
+                }
+                for (AttractionPosition attraction : markerPosition.getAttractionList()) {
+                    TabNavigation.this.mapboxMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(attraction.lat, attraction.lon))
+                            .title(attraction.title)
+                            .snippet(attraction.getStationInfo())
+                            .icon(IconFactory.getInstance(getContext()).fromResource(attraction.icon))
                     );
                 }
 
@@ -121,7 +129,7 @@ public class TabNavigation extends Fragment {
         double min_dist = Double.POSITIVE_INFINITY;
         LatLng origin_pos = new LatLng(origin.longitude(), origin.latitude());
         LatLng dest_pos = new LatLng(destination.longitude(), destination.latitude());
-        ArrayList<Position> all_stations = markerPosition.getStationList();
+        ArrayList<StationPosition> all_stations = markerPosition.getStationList();
         for (int i = 0; i < all_stations.size(); i++) {
             LatLng tmp_station = new LatLng(all_stations.get(i).getLon(), all_stations.get(i).getLat());
             double tmp_dist = origin_pos.distanceTo(tmp_station) + tmp_station.distanceTo(dest_pos);

@@ -9,7 +9,9 @@
     <string name="start_navigation">Start navigation</string>
     <string name="no_number_phone">No number</string>
     <string name="no_empty_place">No information about place</string>
-    <string name="empty_place_holder">Empty place: </string>
-    <string name="phone_number_holder">Phone: </string>
-    <string name="time_to_charge_holder">Time to charge: </string>
+    <string name="empty_place_holder">Empty place:</string>
+    <string name="phone_number_holder">Phone:</string>
+    <string name="time_to_charge_holder">Time to charge:</string>
+    <string name="no_open_hours_holder">Today open:</string>
+    <string name="no_open_hours">No information about open hours</string>
 </resources>

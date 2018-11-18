@@ -23,8 +23,8 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import java.util.List;
 
 public class TabStations extends Fragment {
-    View fragmentLayout;
-    MarkerPosition markerPosition;
+    private View fragmentLayout;
+    private MarkerPosition markerPosition;
     private MapView miniMap;
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
@@ -35,7 +35,7 @@ public class TabStations extends Fragment {
         fragmentLayout = inflater.inflate(R.layout.stations, container, false);
         markerPosition = new MarkerPosition(getContext());
 
-        miniMap = (MapView) fragmentLayout.findViewById(R.id.mapView);
+        miniMap = (MapView) fragmentLayout.findViewById(R.id.mapView_stat);
         miniMap.onCreate(savedInstanceState);
 
         miniMap.getMapAsync(new OnMapReadyCallback() {
@@ -47,7 +47,7 @@ public class TabStations extends Fragment {
 
                 enableLocationComponent(TabStations.this.mapboxMap);
 //                // One way to add a marker view
-                for (Position station : markerPosition.getStationList()) {
+                for (StationPosition station : markerPosition.getStationList()) {
                     TabStations.this.mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(station.lat, station.lon))
                             .title(station.title)
