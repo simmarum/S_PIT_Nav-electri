@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -30,6 +32,9 @@ public class TabAttractions extends Fragment {
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
     private Location originLocation;
+    private Button myButton;
+    private View myView;
+    private boolean isUp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +61,57 @@ public class TabAttractions extends Fragment {
             }
 
         });
+        myView = fragmentLayout.findViewById(R.id.my_attr_view);
+        myButton = fragmentLayout.findViewById(R.id.my_show_attr_button);
+        myButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSlideViewAttrButtonClick(v);
+            }
+        });
+        // initialize as invisible (could also do in xml)
+        myView.setVisibility(View.INVISIBLE);
+        isUp = false;
         return fragmentLayout;
+    }
+
+    // slide the view from below itself to the current position
+    public void slideUp(View view){
+        Log.d("MMM","323232");
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                view.getHeight(),  // fromYDelta
+                0);                // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    // slide the view from its current position to below itself
+    public void slideDown(View view){
+        Log.d("MMM","9090");
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,                 // fromYDelta
+                view.getHeight()); // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+
+    }
+
+    public void onSlideViewAttrButtonClick(View view) {
+        Log.d("MMM","!@"+isUp);
+        if (isUp) {
+            slideDown(myView);
+            myButton.setText(R.string.hide_attraction);
+        } else {
+            slideUp(myView);
+            myButton.setText(R.string.show_attraction);
+        }
+        isUp = !isUp;
     }
 
     @SuppressWarnings({"MissingPermission"})

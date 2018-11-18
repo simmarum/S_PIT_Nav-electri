@@ -14,4 +14,6 @@
     <string name="time_to_charge_holder">Time to charge:</string>
     <string name="no_open_hours_holder">Today open:</string>
     <string name="no_open_hours">No information about open hours</string>
+    <string name="show_attraction">Show list attractions</string>
+    <string name="hide_attraction">Hide list attractions</string>
 </resources>
