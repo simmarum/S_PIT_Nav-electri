@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -76,13 +77,18 @@ public class TabNavigation extends Fragment {
 
                 enableLocationComponent(TabNavigation.this.mapboxMap);
 //                // One way to add a marker view
-                TabNavigation.this.mapboxMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(52.406374, 16.9251681))
-                        .title("Poznan")
-                        .snippet("Wielkopolska")
-                        .icon(IconFactory.getInstance(getContext()).fromResource(R.drawable.pin_red))
 
-                );
+                for(Position station : MarkerPosition.getStationList()){
+                    Log.i("MMM",station.toString());
+                    TabNavigation.this.mapboxMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(station.lat, station.lon))
+                            .title(station.title)
+                            .snippet(station.title)
+                            .icon(IconFactory.getInstance(getContext()).fromResource(station.icon))
+                    );
+                    Log.i("MMM",station.toString());
+                }
+
                 originCoord = new LatLng(originLocation.getLatitude(), originLocation.getLongitude());
                 TabNavigation.this.mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
                     @Override
@@ -118,10 +124,30 @@ public class TabNavigation extends Fragment {
         return fragmentLayout;
     }
 
+    private Point getNearestStation(Point origin, Point destination){
+        int station_index=0;
+        double min_dist = Double.POSITIVE_INFINITY;
+        LatLng origin_pos = new LatLng(origin.longitude(),origin.latitude());
+        LatLng dest_pos = new LatLng(destination.longitude(),destination.latitude());
+        ArrayList<Position> all_stations = MarkerPosition.getStationList();
+        for(int i=0; i<all_stations.size();i++){
+            LatLng tmp_station = new LatLng(all_stations.get(i).getLon(), all_stations.get(i).getLat());
+            double tmp_dist = origin_pos.distanceTo(tmp_station) + tmp_station.distanceTo(dest_pos);
+
+            if(min_dist > tmp_dist){
+                min_dist = tmp_dist;
+                station_index = i;
+            }
+        }
+        return Point.fromLngLat(all_stations.get(station_index).getLon(),all_stations.get(station_index).getLat());
+    }
+
     private void getRoute(Point origin, Point destination) {
+        Point nearest_station = getNearestStation(origin,destination);
         NavigationRoute.builder(getContext())
                 .accessToken(Mapbox.getAccessToken())
                 .origin(origin)
+                .addWaypoint(nearest_station)
                 .destination(destination)
                 .build()
                 .getRoute(new Callback<DirectionsResponse>() {
