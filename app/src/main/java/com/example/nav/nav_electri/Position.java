@@ -1,9 +1,5 @@
 package com.example.nav.nav_electri;
 
-import android.graphics.drawable.Icon;
-
-import com.mapbox.mapboxsdk.annotations.IconFactory;
-
 public class Position {
     public double lat;
     public double lon;
@@ -12,7 +8,7 @@ public class Position {
     public Integer icon;
 
 
-    public Position(double lat,double lon, String title,String snip,Integer icon) {
+    public Position(double lat, double lon, String title, String snip, Integer icon) {
         setLat(lat);
         setLon(lon);
         setTitle(title);
@@ -25,7 +21,7 @@ public class Position {
     }
 
     public void setIcon(Integer icon) {
-        if(icon == null){
+        if (icon == null) {
             this.icon = R.drawable.pin_orange;
         } else {
             this.icon = icon;
@@ -36,12 +32,32 @@ public class Position {
         return lon;
     }
 
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
     public String getSnip() {
         return snip;
     }
 
+    public void setSnip(String snip) {
+        if (snip == null) {
+            this.snip = "";
+        } else {
+            this.snip = snip;
+        }
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        if (title == null) {
+            this.title = "";
+        } else {
+            this.title = title;
+        }
     }
 
     public double getLat() {
@@ -52,28 +68,8 @@ public class Position {
         this.lat = lat;
     }
 
-    public void setLon(double lon) {
-        this.lon = lon;
-    }
-
-    public void setSnip(String snip) {
-        if(snip == null){
-            this.snip = "";
-        } else {
-            this.snip = snip;
-        }
-    }
-
-    public void setTitle(String title) {
-        if (title == null){
-            this.title = "";
-        } else {
-            this.title = title;
-        }
-    }
-
     @Override
     public String toString() {
-        return "Lat: "+lat+" Lon: "+lon+" Title: "+title+" Snippest: "+snip+" Icon: "+icon;
+        return "Lat: " + lat + " Lon: " + lon + " Title: " + title + " Snippest: " + snip + " Icon: " + icon;
     }
 }

@@ -26,7 +26,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 TabAttractions tabAttractions = new TabAttractions();
                 return tabAttractions;
             case 3:
-                TabSettings tabSettings  = new TabSettings();
+                TabSettings tabSettings = new TabSettings();
                 return tabSettings;
             default:
                 return null;
