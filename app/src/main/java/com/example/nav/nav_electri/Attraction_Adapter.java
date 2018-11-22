@@ -50,6 +50,14 @@ public class Attraction_Adapter extends BaseAdapter {
         TextView attr_item_title = (TextView) vi.findViewById(R.id.attr_item_title);
         attr_item_title.setText(data.get(position).getTitle());
 
+
+
+        if(data.get(position).getSponsor() == true){
+            TextView attr_sponsor = (TextView) vi.findViewById(R.id.attr_sponsor);
+            attr_sponsor.setText(this.context.getResources().getString(R.string.sponsor_holder));
+        }
+
+
         TextView attr_item_snip = (TextView) vi.findViewById(R.id.attr_item_snip);
         attr_item_snip.setText(data.get(position).getSnip());
 

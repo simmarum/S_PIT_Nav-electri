@@ -8,18 +8,22 @@ public class Position {
     public String title;
     public String snip;
     public Integer icon;
+    public Boolean sponsor;
 
     public Context context;
 
 
-    public Position(Context context, double lat, double lon, String title, String snip, Integer icon) {
+    public Position(Context context, double lat, double lon, String title, String snip, Integer icon,Boolean sponsor) {
         setContext(context);
         setLat(lat);
         setLon(lon);
         setTitle(title);
         setSnip(snip);
         setIcon(icon);
+        setSponsor(sponsor);
     }
+
+
 
     public Context getContext() {
         return context;
@@ -29,6 +33,13 @@ public class Position {
         this.context = context;
     }
 
+    public Boolean getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(Boolean sponsor) {
+        this.sponsor = sponsor;
+    }
 
     public Integer getIcon() {
         return icon;

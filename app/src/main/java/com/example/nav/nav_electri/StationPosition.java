@@ -6,8 +6,8 @@ public class StationPosition extends Position {
     public Integer empty_place;
     public String telephone;
 
-    public StationPosition(Context context, double lat, double lon, String title, String snip, Integer icon, Integer empty_place, String telephone) {
-        super(context, lat, lon, title, snip, icon);
+    public StationPosition(Context context, double lat, double lon, String title, String snip, Integer icon, Boolean sponsor,Integer empty_place, String telephone) {
+        super(context, lat, lon, title, snip, icon,sponsor);
         setEmpty_place(empty_place);
         setTelephone(telephone);
 

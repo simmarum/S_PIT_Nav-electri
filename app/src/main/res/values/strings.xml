@@ -17,4 +17,5 @@
     <string name="show_attraction">Show list attractions</string>
     <string name="hide_attraction">Hide list attractions</string>
     <string name="distance">Distance:</string>
+    <string name="sponsor_holder">Sponsored material</string>
 </resources>

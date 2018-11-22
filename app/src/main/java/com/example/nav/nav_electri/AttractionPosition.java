@@ -7,8 +7,8 @@ public class AttractionPosition extends Position {
     public String telephone;
     public double distance;
 
-    public AttractionPosition(Context context, double lat, double lon, String title, String snip, Integer icon, String today_open_hours, String telephone,double distance) {
-        super(context, lat, lon, title, snip, icon);
+    public AttractionPosition(Context context, double lat, double lon, String title, String snip, Integer icon,Boolean sponsor, String today_open_hours, String telephone,double distance) {
+        super(context, lat, lon, title, snip, icon,sponsor);
         setToday_open_hours(today_open_hours);
         setTelephone(telephone);
         setDistance(distance);

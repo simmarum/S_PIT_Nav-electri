@@ -66,7 +66,7 @@ public class TabAttractions extends Fragment {
                 TabAttractions.this.mapboxMap = mapboxMap;
 
                 enableLocationComponent(TabAttractions.this.mapboxMap);
-////                // One way to add a marker view
+
                 for (AttractionPosition attraction : markerPosition.getAttractionList()) {
                     TabAttractions.this.mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(attraction.lat, attraction.lon))
@@ -76,6 +76,8 @@ public class TabAttractions extends Fragment {
                     );
                 }
                 TabAttractions.this.setAttrListView();
+
+
             }
 
         });
@@ -93,7 +95,18 @@ public class TabAttractions extends Fragment {
         Collections.sort(attraction_list, new Comparator<AttractionPosition>() {
             @Override
             public int compare(AttractionPosition o1, AttractionPosition o2) {
-                return (o1.getDistance() < o2.getDistance() ) ? -1: (o1.getDistance() > o2.getDistance()) ? 1:0;
+                if(o1.getSponsor() && !o2.getSponsor()){
+                    return -1;
+                }
+                else if(!o1.getSponsor() && o2.getSponsor()){
+                    return 1;
+                }
+                else if(o1.getSponsor() && o2.getSponsor()){
+                    return Double.compare(o1.getDistance(), o2.getDistance());
+                }
+                else {
+                    return Double.compare(o1.getDistance(), o2.getDistance());
+                }
 
             }
         });
@@ -102,7 +115,6 @@ public class TabAttractions extends Fragment {
     }
     // slide the view from below itself to the current position
     public void slideUp(View view){
-        Log.d("MMM","323232");
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
                 0,                 // toXDelta
@@ -115,7 +127,6 @@ public class TabAttractions extends Fragment {
 
     // slide the view from its current position to below itself
     public void slideDown(View view){
-        Log.d("MMM","9090");
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
                 0,                 // toXDelta
@@ -128,13 +139,12 @@ public class TabAttractions extends Fragment {
     }
 
     public void onSlideViewAttrButtonClick(View view) {
-        Log.d("MMM","!@"+isUp);
         if (isUp) {
             slideDown(myView);
-            myButton.setText(R.string.hide_attraction);
+            myButton.setText(R.string.show_attraction);
         } else {
             slideUp(myView);
-            myButton.setText(R.string.show_attraction);
+            myButton.setText(R.string.hide_attraction);
         }
         isUp = !isUp;
     }
@@ -151,7 +161,11 @@ public class TabAttractions extends Fragment {
             // Set the component's camera mode
             locationComponent.setCameraMode(CameraMode.TRACKING);
             originLocation = locationComponent.getLastKnownLocation();
-
+            if (originLocation == null){
+                originLocation = new Location("");
+                originLocation.setLatitude(52.403624);
+                originLocation.setLongitude(16.950047);
+            }
         } else {
             permissionsManager = new PermissionsManager(new PermissionsListener() {
                 @Override

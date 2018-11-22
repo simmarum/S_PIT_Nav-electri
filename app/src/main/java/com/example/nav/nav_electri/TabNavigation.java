@@ -70,8 +70,9 @@ public class TabNavigation extends Fragment {
             public void onMapReady(MapboxMap mapboxMap) {
 
                 TabNavigation.this.mapboxMap = mapboxMap;
-
                 enableLocationComponent(TabNavigation.this.mapboxMap);
+
+
 //                // One way to add a marker view
                 for (Position station : markerPosition.getStationList()) {
                     TabNavigation.this.mapboxMap.addMarker(new MarkerOptions()
@@ -195,6 +196,11 @@ public class TabNavigation extends Fragment {
             // Set the component's camera mode
             locationComponent.setCameraMode(CameraMode.TRACKING);
             originLocation = locationComponent.getLastKnownLocation();
+            if (originLocation == null){
+                originLocation = new Location("");
+                originLocation.setLatitude(52.403624);
+                originLocation.setLongitude(16.950047);
+            }
 
         } else {
             permissionsManager = new PermissionsManager(new PermissionsListener() {
