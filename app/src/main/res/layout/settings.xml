@@ -1,15 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Settings"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/row_green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:background="@drawable/pin_green"/>
+
+        <TextView
+            android:id="@+id/help_pin_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_alignParentStart="true"
+            android:text="@string/help_icon_green"
+            android:textStyle="normal|italic" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:background="@drawable/pin_red"/>
+
+        <TextView
+            android:id="@+id/help_pin_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_alignParentStart="true"
+            android:text="@string/help_icon_red"
+            android:textStyle="normal|italic" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row_orange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:background="@drawable/pin_orange"/>
+
+        <TextView
+            android:id="@+id/help_pin_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_alignParentStart="true"
+            android:text="@string/help_icon_orange"
+            android:textStyle="normal|italic" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row_violet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:background="@drawable/pin_violet"/>
+
+        <TextView
+            android:id="@+id/help_pin_violet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_alignParentStart="true"
+            android:text="@string/help_icon_violet"
+            android:textStyle="normal|italic" />
+    </RelativeLayout>
+
+
+</LinearLayout>
