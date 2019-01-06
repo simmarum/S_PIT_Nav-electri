@@ -26,5 +26,7 @@
     <string name="disconnect">Disconnect from car</string>
     <string name="connect_text">Connected</string>
     <string name="disconnect_text">Disconnected</string>
+    <string name="battery_text">Minimum battery state (%)</string>
+    <string name="battery_value">75</string>
 
 </resources>
