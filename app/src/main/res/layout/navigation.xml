@@ -17,6 +17,36 @@
         mapbox:mapbox_renderTextureMode="true"
         mapbox:mapbox_cameraZoom="11" />
 
+    <TextView
+        android:id="@+id/textViewDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="120dp"
+        android:background="@color/mapboxWhite"
+        android:text="@string/text_navigation_distance" />
+
+    <TextView
+        android:id="@+id/textViewBatteryPercentageActual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="100dp"
+        android:background="@color/mapboxWhite"
+        android:text="@string/text_navigation_battery_actual" />
+
+    <TextView
+        android:id="@+id/textViewBatteryPercentageAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="@color/mapboxWhite"
+        android:text="@string/text_navigation_battery_after" />
+
     <Button
         android:id="@+id/startButton"
         android:layout_width="fill_parent"

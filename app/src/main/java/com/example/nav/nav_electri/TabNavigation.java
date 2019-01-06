@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -55,6 +56,9 @@ public class TabNavigation extends Fragment {
     private NavigationMapRoute navigationMapRoute;
     private Button button;
     private MarkerPosition markerPosition;
+    private TextView battery_actual;
+    private TextView battery_after;
+    private TextView route_distance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,6 +110,8 @@ public class TabNavigation extends Fragment {
                         destinationPosition = Point.fromLngLat(destinationCoord.getLongitude(), destinationCoord.getLatitude());
                         originPosition = Point.fromLngLat(originCoord.getLongitude(), originCoord.getLatitude());
                         getRoute(originPosition, destinationPosition);
+                        setActualBatteryText();
+                        setAfterBatteryText();
                     }
                 });
             }
@@ -122,66 +128,191 @@ public class TabNavigation extends Fragment {
             // Call this method with Context from within an Activity
             NavigationLauncher.startNavigation(getActivity(), options);
         });
+
+        battery_actual = fragmentLayout.findViewById(R.id.textViewBatteryPercentageActual);
+        setActualBatteryText();
+
+        battery_after = fragmentLayout.findViewById(R.id.textViewBatteryPercentageAfter);
+        setAfterBatteryText();
+
+        route_distance = fragmentLayout.findViewById(R.id.textViewDistance);
+        setActualRouteDistance(0);
+
         return fragmentLayout;
     }
 
-    private Point getNearestStation(Point origin, Point destination) {
-        int station_index = 0;
-        double min_dist = Double.POSITIVE_INFINITY;
+
+    private void setActualRouteDistance(double distance){
+        route_distance.setText(getResources().getString(R.string.text_navigation_distance, distance));
+    }
+
+    private void setActualBatteryText(){
+        if (Car.isConnected){
+            battery_actual.setText(getResources().getString(R.string.text_navigation_battery_actual, Car.battery_percent_actual));
+        } else {
+            battery_actual.setText(getResources().getString(R.string.text_navigation_battery_actual, -1));
+        }
+    }
+
+    private void setAfterBatteryText(){
+        if (Car.isConnected){
+            battery_after.setText(getResources().getString(R.string.text_navigation_battery_after, Car.battery_percent_after));
+        } else {
+            battery_after.setText(getResources().getString(R.string.text_navigation_battery_after, -1));
+        }
+    }
+    private Point getNearestStation(Point origin, Point destination) throws Exception {
+        int station_index_0 = -1;
+        double min_dist_0 = Double.POSITIVE_INFINITY;
+        int battery_after_0 = -1;
+
+        int station_index_min = -1;
+        double min_dist_min = Double.POSITIVE_INFINITY;
+        int battery_after_min = -1;
+
+        double ratio = 0.003;
+
         LatLng origin_pos = new LatLng(origin.longitude(), origin.latitude());
         LatLng dest_pos = new LatLng(destination.longitude(), destination.latitude());
-        ArrayList<StationPosition> all_stations = markerPosition.getStationList();
-        for (int i = 0; i < all_stations.size(); i++) {
-            LatLng tmp_station = new LatLng(all_stations.get(i).getLon(), all_stations.get(i).getLat());
-            double tmp_dist = origin_pos.distanceTo(tmp_station) + tmp_station.distanceTo(dest_pos);
 
-            if (min_dist > tmp_dist) {
-                min_dist = tmp_dist;
-                station_index = i;
+        double simple_distance = origin_pos.distanceTo(dest_pos);
+        int after_simple_distance_battery = Car.battery_percent_actual - (int)(simple_distance*ratio);
+
+        if (Car.isConnected) {
+            if (after_simple_distance_battery > Car.min_battery_percent) {
+                Car.battery_percent_after = after_simple_distance_battery;
+                setActualRouteDistance(simple_distance / 1000.0);
+                return null;
+            } else {
+                ArrayList<StationPosition> all_stations = markerPosition.getStationList();
+                for (int i = 0; i < all_stations.size(); i++) {
+                    LatLng tmp_station = new LatLng(all_stations.get(i).getLon(), all_stations.get(i).getLat());
+                    double dist_part_1 = origin_pos.distanceTo(tmp_station);
+                    int perc_part_1 = Car.battery_percent_actual - (int) (dist_part_1 * ratio);
+                    double dist_part_2 = tmp_station.distanceTo(dest_pos);
+                    int perc_part_2 = 100 - (int) (dist_part_2 * ratio);
+
+                    if (perc_part_1 > 0) {
+                        double tmp_dist = dist_part_1 + dist_part_2;
+                        if (perc_part_2 > Car.min_battery_percent) {
+                            if (min_dist_min > tmp_dist) {
+                                min_dist_min = tmp_dist;
+                                station_index_min = i;
+                                battery_after_min = perc_part_2;
+                            }
+                        } else if (perc_part_2 > 0) {
+                            if (min_dist_0 > tmp_dist) {
+                                min_dist_0 = tmp_dist;
+                                station_index_0 = i;
+                                battery_after_0 = perc_part_2;
+                            }
+                        }
+                    }
+                }
+                if (station_index_min >= 0) {
+                    Car.battery_percent_after = battery_after_min;
+                    setActualRouteDistance(min_dist_min / 1000.0);
+                    return Point.fromLngLat(all_stations.get(station_index_min).getLon(), all_stations.get(station_index_min).getLat());
+                } else if (station_index_0 >= 0) {
+                    Car.battery_percent_after = battery_after_0;
+                    setActualRouteDistance(min_dist_0 / 1000.0);
+                    return Point.fromLngLat(all_stations.get(station_index_0).getLon(), all_stations.get(station_index_0).getLat());
+                } else {
+                    setActualRouteDistance(0.0);
+                    throw new Exception();
+                }
             }
+        } else {
+            setActualRouteDistance(simple_distance / 1000.0);
+            return null;
         }
-        return Point.fromLngLat(all_stations.get(station_index).getLon(), all_stations.get(station_index).getLat());
     }
 
     private void getRoute(Point origin, Point destination) {
-        Point nearest_station = getNearestStation(origin, destination);
-        NavigationRoute.builder(getContext())
-                .accessToken(Mapbox.getAccessToken())
-                .origin(origin)
-                .addWaypoint(nearest_station)
-                .destination(destination)
-                .build()
-                .getRoute(new Callback<DirectionsResponse>() {
-                    @Override
-                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-                        // You can get the generic HTTP info about the response
-                        Log.d(TAG, "Response code: " + response.code());
-                        if (response.body() == null) {
-                            Log.e(TAG, "No routes found, make sure you set the right user and access token.");
-                            return;
-                        } else if (response.body().routes().size() < 1) {
-                            Log.e(TAG, "No routes found");
-                            return;
-                        }
+        Point nearest_station = null;
+        try {
+            nearest_station = getNearestStation(origin, destination);
+            if (nearest_station != null) {
+                NavigationRoute.builder(getContext())
+                        .accessToken(Mapbox.getAccessToken())
+                        .origin(origin)
+                        .addWaypoint(nearest_station)
+                        .destination(destination)
+                        .build()
+                        .getRoute(new Callback<DirectionsResponse>() {
+                            @Override
+                            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                                // You can get the generic HTTP info about the response
+                                Log.d(TAG, "Response code: " + response.code());
+                                if (response.body() == null) {
+                                    Log.e(TAG, "No routes found, make sure you set the right user and access token.");
+                                    return;
+                                } else if (response.body().routes().size() < 1) {
+                                    Log.e(TAG, "No routes found");
+                                    return;
+                                }
 
-                        currentRoute = response.body().routes().get(0);
+                                currentRoute = response.body().routes().get(0);
 
-                        // Draw the route on the map
-                        if (navigationMapRoute != null) {
-                            navigationMapRoute.removeRoute();
-                        } else {
-                            navigationMapRoute = new NavigationMapRoute(null, miniMap, mapboxMap, R.style.NavigationMapRoute);
-                        }
-                        navigationMapRoute.addRoute(currentRoute);
-                        button.setEnabled(true);
-                        button.setBackgroundResource(R.color.mapboxBlue);
-                    }
+                                // Draw the route on the map
+                                if (navigationMapRoute != null) {
+                                    navigationMapRoute.removeRoute();
+                                } else {
+                                    navigationMapRoute = new NavigationMapRoute(null, miniMap, mapboxMap, R.style.NavigationMapRoute);
+                                }
+                                navigationMapRoute.addRoute(currentRoute);
+                                button.setEnabled(true);
+                                button.setBackgroundResource(R.color.mapboxBlue);
+                            }
 
-                    @Override
-                    public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
-                        Log.e(TAG, "Error: " + throwable.getMessage());
-                    }
-                });
+                            @Override
+                            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                                Log.e(TAG, "Error: " + throwable.getMessage());
+                            }
+                        });
+            } else {
+                NavigationRoute.builder(getContext())
+                        .accessToken(Mapbox.getAccessToken())
+                        .origin(origin)
+                        .destination(destination)
+                        .build()
+                        .getRoute(new Callback<DirectionsResponse>() {
+                            @Override
+                            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                                // You can get the generic HTTP info about the response
+                                Log.d(TAG, "Response code: " + response.code());
+                                if (response.body() == null) {
+                                    Log.e(TAG, "No routes found, make sure you set the right user and access token.");
+                                    return;
+                                } else if (response.body().routes().size() < 1) {
+                                    Log.e(TAG, "No routes found");
+                                    return;
+                                }
+
+                                currentRoute = response.body().routes().get(0);
+
+                                // Draw the route on the map
+                                if (navigationMapRoute != null) {
+                                    navigationMapRoute.removeRoute();
+                                } else {
+                                    navigationMapRoute = new NavigationMapRoute(null, miniMap, mapboxMap, R.style.NavigationMapRoute);
+                                }
+                                navigationMapRoute.addRoute(currentRoute);
+                                button.setEnabled(true);
+                                button.setBackgroundResource(R.color.mapboxBlue);
+                            }
+
+                            @Override
+                            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                                Log.e(TAG, "Error: " + throwable.getMessage());
+                            }
+                        });
+            }
+        } catch (Exception e) {
+            Log.w(TAG,"Route too long (battery drop below zero!)");
+            navigationMapRoute.removeRoute();
+        }
+
     }
 
     @SuppressWarnings({"MissingPermission"})
@@ -252,6 +383,7 @@ public class TabNavigation extends Fragment {
     public void onResume() {
         super.onResume();
         miniMap.onResume();
+        setActualBatteryText();
     }
 
     @Override

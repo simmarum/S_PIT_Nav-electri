@@ -45,13 +45,13 @@ public class TabSettings extends Fragment {
                     Integer x = Integer.parseInt(s.toString());
                     if (x > 100){
                         my_edit_battery_value.setText("100");
-                        Car.battery_percent = 100;
+                        Car.min_battery_percent = 100;
                     } else {
-                        Car.battery_percent = x;
+                        Car.min_battery_percent = x;
                     }
                 } else {
                     my_edit_battery_value.setText("0");
-                    Car.battery_percent = 0;
+                    Car.min_battery_percent = 0;
                 }
             }
 
@@ -66,13 +66,15 @@ public class TabSettings extends Fragment {
 
     public void onConnectButtonClick(View v){
         if (Car.isConnected) {
-            my_connect_button.setText(R.string.disconnect);
-            my_connect_text.setText(R.string.connect_text);
-        } else {
             my_connect_button.setText(R.string.connect);
             my_connect_text.setText(R.string.disconnect_text);
+            Car.isConnected = false;
+
+        } else {
+            my_connect_button.setText(R.string.disconnect);
+            my_connect_text.setText(R.string.connect_text);
+            Car.isConnected = true;
         }
-        Car.isConnected = !Car.isConnected;
 
     }
 }

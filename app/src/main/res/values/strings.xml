@@ -28,5 +28,8 @@
     <string name="disconnect_text">Disconnected</string>
     <string name="battery_text">Minimum battery state (%)</string>
     <string name="battery_value">75</string>
+    <string name="text_navigation_battery_actual">Battery actual: %1$d%%</string>
+    <string name="text_navigation_battery_after">Battery after road: %1$d%%</string>
+    <string name="text_navigation_distance">Route has %1$.2fkm</string>
 
 </resources>
