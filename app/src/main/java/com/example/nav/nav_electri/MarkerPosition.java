@@ -46,6 +46,10 @@ public class MarkerPosition {
         this.attractionList.add(new AttractionPosition(this.context, 52.408483, 16.906295, "Stare Zoo", "Małpy, Róże, Plac zabaw...", R.drawable.pin_yellow,false, "9.00 - 20.00", "999999997",-1));
         this.attractionList.add(new AttractionPosition(this.context, 52.408070, 16.933467, "Ratusz w Poznaniu", "Stary Rynek, Koziołki...", R.drawable.pin_yellow,true, "24/7", null,-1));
         this.attractionList.add(new AttractionPosition(this.context, 52.419546, 16.829309, "Lotnisko Ławica", "Samoloty...", R.drawable.pin_yellow,false, "24/7", "999999996",-1));
+        this.attractionList.add(new AttractionPosition(this.context, 52.418070, 16.923467, "Random 1", "Ala ma kota", R.drawable.pin_orange,true, "24/7", null,-1));
+        this.attractionList.add(new AttractionPosition(this.context, 52.400070, 16.953467, "Random 2", "...", R.drawable.pin_yellow,true, "24/7", null,-1));
+        this.attractionList.add(new AttractionPosition(this.context, 52.398070, 16.903467, "Random 3", "...", R.drawable.pin_yellow,true, "24/7", null,-1));
+
     }
 
     public ArrayList<StationPosition> getStationList() {

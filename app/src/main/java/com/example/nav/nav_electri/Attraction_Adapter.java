@@ -1,6 +1,7 @@
 package com.example.nav.nav_electri;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +52,12 @@ public class Attraction_Adapter extends BaseAdapter {
         attr_item_title.setText(data.get(position).getTitle());
 
 
-
         if(data.get(position).getSponsor() == true){
             TextView attr_sponsor = (TextView) vi.findViewById(R.id.attr_sponsor);
             attr_sponsor.setText(this.context.getResources().getString(R.string.sponsor_holder));
+        } else {
+            TextView attr_sponsor = (TextView) vi.findViewById(R.id.attr_sponsor);
+            attr_sponsor.setText("");
         }
 
 

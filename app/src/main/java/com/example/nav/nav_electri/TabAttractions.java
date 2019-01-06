@@ -115,30 +115,33 @@ public class TabAttractions extends Fragment {
     }
     // slide the view from below itself to the current position
     public void slideUp(View view){
-        TranslateAnimation animate = new TranslateAnimation(
-                0,                 // fromXDelta
-                0,                 // toXDelta
-                view.getHeight(),  // fromYDelta
-                0);                // toYDelta
-        animate.setDuration(500);
-        animate.setFillAfter(true);
-        view.startAnimation(animate);
+//        TranslateAnimation animate = new TranslateAnimation(
+//                0,                 // fromXDelta
+//                0,                 // toXDelta
+//                view.getHeight(),  // fromYDelta
+//                0);                // toYDelta
+//        animate.setDuration(500);
+//        animate.setFillAfter(true);
+//        view.startAnimation(animate);
+        view.animate().translationY(0).start();
     }
 
     // slide the view from its current position to below itself
     public void slideDown(View view){
-        TranslateAnimation animate = new TranslateAnimation(
-                0,                 // fromXDelta
-                0,                 // toXDelta
-                0,                 // fromYDelta
-                view.getHeight()); // toYDelta
-        animate.setDuration(500);
-        animate.setFillAfter(true);
-        view.startAnimation(animate);
+//        TranslateAnimation animate = new TranslateAnimation(
+//                0,                 // fromXDelta
+//                0,                 // toXDelta
+//                0,                 // fromYDelta
+//                view.getHeight()); // toYDelta
+//        animate.setDuration(500);
+//        animate.setFillAfter(true);
+//        view.startAnimation(animate);
+        view.animate().translationY(view.getHeight()).start();
 
     }
 
     public void onSlideViewAttrButtonClick(View view) {
+        myView.setVisibility(View.VISIBLE);
         if (isUp) {
             slideDown(myView);
             myButton.setText(R.string.show_attraction);
