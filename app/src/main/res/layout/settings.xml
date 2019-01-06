@@ -95,4 +95,32 @@
     </RelativeLayout>
 
 
+    <RelativeLayout
+        android:id="@+id/row_connect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/my_connect_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:background="@color/mapbox_blue"
+            android:enabled="true"
+            android:padding="10dp"
+            android:text="@string/connect"
+            android:textColor="@color/mapboxWhite" />
+
+        <TextView
+            android:id="@+id/my_connect_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentStart="true"
+            android:text="@string/disconnect_text" />
+    </RelativeLayout>
+
+
 </LinearLayout>
