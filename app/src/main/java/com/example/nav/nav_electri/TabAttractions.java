@@ -64,7 +64,7 @@ public class TabAttractions extends Fragment {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
                 TabAttractions.this.mapboxMap = mapboxMap;
-
+                TabAttractions.this.mapboxMap.getUiSettings().setCompassMargins(10,150,10,10);
                 enableLocationComponent(TabAttractions.this.mapboxMap);
 
                 for (AttractionPosition attraction : markerPosition.getAttractionList()) {
@@ -81,6 +81,8 @@ public class TabAttractions extends Fragment {
             }
 
         });
+
+
 
         return fragmentLayout;
     }

@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Mapbox.getInstance(getApplicationContext(), "pk.eyJ1Ijoic2ltbWFydW0iLCJhIjoiY2pvazQ2aTc3MGI1bzNwbzFtbDZvOGJqZyJ9.o5xHndqBvRXIVWQ_9yHiAQ");
         Mapbox.getTelemetry().setUserTelemetryRequestState(false);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
         View tab_navigation = getLayoutInflater().inflate(R.layout.my_main_tab, null);

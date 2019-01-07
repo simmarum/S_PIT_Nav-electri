@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_margin="10dp"
-            android:background="@color/mapbox_blue"
+            android:background="@color/mapboxBlue"
             android:enabled="true"
             android:padding="10dp"
             android:text="@string/connect"

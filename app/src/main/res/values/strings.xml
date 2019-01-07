@@ -31,5 +31,9 @@
     <string name="text_navigation_battery_actual">Battery actual: %1$d%%</string>
     <string name="text_navigation_battery_after">Battery after road: %1$d%%</string>
     <string name="text_navigation_distance">Route has %1$.2fkm</string>
+    <string name="point_A_text">From:</string>
+    <string name="point_B_text">To:</string>
+    <string name="find_route">Find route</string>
+
 
 </resources>

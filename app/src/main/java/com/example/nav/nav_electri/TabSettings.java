@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 public class TabSettings extends Fragment {
     private View fragmentLayout;
     private Button my_connect_button;
@@ -47,12 +49,16 @@ public class TabSettings extends Fragment {
                         my_edit_battery_value.setText("100");
                         Car.min_battery_percent = 100;
                     } else {
+                        if ((s.length() > 1) && (s.toString().startsWith("0"))) {
+                            my_edit_battery_value.setText(s.toString().subSequence(1,s.length()));
+                        }
                         Car.min_battery_percent = x;
                     }
                 } else {
                     my_edit_battery_value.setText("0");
                     Car.min_battery_percent = 0;
                 }
+                my_edit_battery_value.setSelection(my_edit_battery_value.getText().toString().length());
             }
 
             @Override

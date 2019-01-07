@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
 
-
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
@@ -15,7 +14,80 @@
         mapbox:mapbox_cameraTargetLng="16.9251681"
         mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
         mapbox:mapbox_renderTextureMode="true"
-        mapbox:mapbox_cameraZoom="11" />
+        mapbox:mapbox_cameraZoom="11"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="150dp"
+        />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/mapboxWhite">
+
+        <TextView
+            android:id="@+id/point_A_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/mapboxWhite"
+            android:text="@string/point_A_text" />
+
+        <EditText
+            android:id="@+id/point_A"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="5dp"
+            android:inputType="textAutoCorrect"
+            android:autofillHints="@string/point_A_text"
+            android:labelFor="@+id/point_A_text"
+            android:hint="@string/point_A_text"
+            />
+
+        <TextView
+            android:id="@+id/point_B_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="70dp"
+            android:background="@color/mapboxWhite"
+            android:text="@string/point_B_text" />
+
+        <EditText
+            android:id="@+id/point_B"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="55dp"
+            android:inputType="textAutoCorrect"
+            android:autofillHints="@string/point_B_text"
+            android:labelFor="@+id/point_B_text"
+            android:hint="@string/point_B_text"
+            />
+
+        <Button
+            android:id="@+id/findRoute"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="40dp"
+            android:background="@color/mapboxBlue"
+            android:text="@string/find_route"
+            android:textColor="@color/mapboxWhite" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textViewDistance"

@@ -4,11 +4,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +20,15 @@ import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -59,6 +67,14 @@ public class TabNavigation extends Fragment {
     private TextView battery_actual;
     private TextView battery_after;
     private TextView route_distance;
+    private Button find_button;
+    private EditText from_input;
+    private Boolean from_input_correct;
+    private EditText to_input;
+    private Boolean to_input_correct;
+    private MapboxGeocoding mapboxGeocoding;
+    private Point firstResultPoint_A = null;
+    private Point firstResultPoint_B = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -112,6 +128,7 @@ public class TabNavigation extends Fragment {
                         getRoute(originPosition, destinationPosition);
                         setActualBatteryText();
                         setAfterBatteryText();
+
                     }
                 });
             }
@@ -138,6 +155,141 @@ public class TabNavigation extends Fragment {
         route_distance = fragmentLayout.findViewById(R.id.textViewDistance);
         setActualRouteDistance(0);
 
+        find_button = fragmentLayout.findViewById(R.id.findRoute);
+        find_button.setEnabled(false);
+        find_button.setBackgroundResource(R.color.mapboxGrayLight);
+
+        from_input_correct = false;
+        from_input = fragmentLayout.findViewById(R.id.point_A);
+        from_input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0) {
+                    find_button.setEnabled(false);
+                    find_button.setBackgroundResource(R.color.mapboxGrayLight);
+                    from_input_correct = false;
+                } else {
+                    from_input_correct = true;
+                    if (to_input_correct){
+                        find_button.setEnabled(true);
+                        find_button.setBackgroundResource(R.color.mapboxBlue);
+                    }
+                }
+            }
+        });
+
+        to_input_correct = false;
+        to_input = fragmentLayout.findViewById(R.id.point_B);
+        to_input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0) {
+                    find_button.setEnabled(false);
+                    find_button.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.mapboxGrayLight));
+                    to_input_correct = false;
+                } else {
+                    to_input_correct = true;
+                    if (from_input_correct) {
+                        find_button.setEnabled(true);
+                        find_button.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.mapboxBlue));
+                    }
+                }
+            }
+        });
+
+        find_button.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+                mapboxGeocoding = MapboxGeocoding.builder()
+                        .accessToken(Mapbox.getAccessToken())
+                        .query(from_input.getText().toString())
+                        .build();
+                mapboxGeocoding.enqueueCall(new Callback<GeocodingResponse>() {
+                    @Override
+                    public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+
+                        List<CarmenFeature> results = response.body().features();
+
+                        if (results.size() > 0) {
+                            // Log the first results Point.
+                            firstResultPoint_A = results.get(0).center();
+
+                        } else {
+                            firstResultPoint_A = null;
+                            // No result for your request were found.
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                });
+
+                mapboxGeocoding = MapboxGeocoding.builder()
+                        .accessToken(Mapbox.getAccessToken())
+                        .query(to_input.getText().toString())
+                        .build();
+                mapboxGeocoding.enqueueCall(new Callback<GeocodingResponse>() {
+                    @Override
+                    public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+
+                        List<CarmenFeature> results = response.body().features();
+
+                        if (results.size() > 0) {
+                            // Log the first results Point.
+                            firstResultPoint_B = results.get(0).center();
+
+                        } else {
+                            firstResultPoint_B = null;
+                            // No result for your request were found.
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                });
+                if (firstResultPoint_A != null){
+                    Log.i("MMMAA",firstResultPoint_A.toString());
+                }
+                if (firstResultPoint_B != null){
+                    Log.i("MMMBB",firstResultPoint_B.toString());
+                }
+                if ((firstResultPoint_A != null) && (firstResultPoint_B != null) ){
+                    getRoute(firstResultPoint_A, firstResultPoint_B);
+                    setActualBatteryText();
+                    setAfterBatteryText();
+                    mapboxMap.setCameraPosition(new CameraPosition.Builder()
+                            .target(new LatLng(firstResultPoint_A.latitude(), firstResultPoint_A.longitude()))
+                            .zoom(13.0)
+                            .build());
+                }
+            }
+        });
         return fragmentLayout;
     }
 
@@ -377,6 +529,7 @@ public class TabNavigation extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         miniMap.onDestroy();
+        mapboxGeocoding.cancelCall();
     }
 
     @Override
