@@ -17,7 +17,7 @@
     <string name="show_attraction">Show list attractions</string>
     <string name="hide_attraction">Hide list attractions</string>
     <string name="distance">Distance:</string>
-    <string name="sponsor_holder">Sponsored material</string>
+    <string name="sponsor_holder">SM %1$s</string>
     <string name="help_icon_green">"This icon mean - electric station (slow)"</string>
     <string name="help_icon_red">"This icon mean - electric station (fast)"</string>
     <string name="help_icon_orange">"This icon mean - attraction (shopping center)"</string>

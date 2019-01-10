@@ -9,12 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Attraction_Adapter extends BaseAdapter {
 
     Context context;
     ArrayList<AttractionPosition> data;
     private static LayoutInflater inflater = null;
+    private Random random = new Random();
 
     public Attraction_Adapter(Context context, ArrayList<AttractionPosition> data) {
         // TODO Auto-generated constructor stub
@@ -54,7 +56,12 @@ public class Attraction_Adapter extends BaseAdapter {
 
         if(data.get(position).getSponsor() == true){
             TextView attr_sponsor = (TextView) vi.findViewById(R.id.attr_sponsor);
-            attr_sponsor.setText(this.context.getResources().getString(R.string.sponsor_holder));
+            if(data.get(position).getCode() == true){
+                attr_sponsor.setText(this.context.getResources().getString(R.string.sponsor_holder,Long.toHexString(random.nextLong()).substring(0, 6).toUpperCase()));
+            } else {
+                attr_sponsor.setText(this.context.getResources().getString(R.string.sponsor_holder,""));
+            }
+
         } else {
             TextView attr_sponsor = (TextView) vi.findViewById(R.id.attr_sponsor);
             attr_sponsor.setText("");

@@ -9,11 +9,12 @@ public class Position {
     public String snip;
     public Integer icon;
     public Boolean sponsor;
+    public Boolean code;
 
     public Context context;
 
 
-    public Position(Context context, double lat, double lon, String title, String snip, Integer icon,Boolean sponsor) {
+    public Position(Context context, double lat, double lon, String title, String snip, Integer icon,Boolean sponsor,Boolean code) {
         setContext(context);
         setLat(lat);
         setLon(lon);
@@ -21,10 +22,17 @@ public class Position {
         setSnip(snip);
         setIcon(icon);
         setSponsor(sponsor);
+        setCode(code);
     }
 
 
+    public Boolean getCode() {
+        return code;
+    }
 
+    public void setCode(Boolean code) {
+        this.code = code;
+    }
     public Context getContext() {
         return context;
     }
