@@ -10,13 +10,14 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="145dp"
+        android:layout_marginBottom="40dp"
         mapbox:mapbox_cameraTargetLat="52.406374"
         mapbox:mapbox_cameraTargetLng="16.9251681"
         mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
         mapbox:mapbox_renderTextureMode="true"
         mapbox:mapbox_cameraZoom="11"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="150dp"
         />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,6 +36,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
             android:background="@color/mapboxWhite"
+            android:textSize="14sp"
             android:text="@string/point_A_text" />
 
         <EditText
@@ -47,6 +49,7 @@
             android:inputType="textAutoCorrect"
             android:autofillHints="@string/point_A_text"
             android:labelFor="@+id/point_A_text"
+            android:textSize="14sp"
             android:hint="@string/point_A_text"
             />
 
@@ -59,6 +62,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="70dp"
             android:background="@color/mapboxWhite"
+            android:textSize="14sp"
             android:text="@string/point_B_text" />
 
         <EditText
@@ -71,13 +75,14 @@
             android:inputType="textAutoCorrect"
             android:autofillHints="@string/point_B_text"
             android:labelFor="@+id/point_B_text"
+            android:textSize="14sp"
             android:hint="@string/point_B_text"
             />
 
         <Button
             android:id="@+id/findRoute"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="40dp"
@@ -85,7 +90,9 @@
             android:layout_marginEnd="40dp"
             android:background="@color/mapboxBlue"
             android:text="@string/find_route"
+            android:textSize="14sp"
             android:textColor="@color/mapboxWhite" />
+
 
     </RelativeLayout>
 
@@ -95,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="125dp"
         android:background="@color/mapboxWhite"
         android:text="@string/text_navigation_distance" />
 
@@ -105,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="105dp"
         android:background="@color/mapboxWhite"
         android:text="@string/text_navigation_battery_actual" />
 
@@ -115,20 +122,30 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="85dp"
         android:background="@color/mapboxWhite"
         android:text="@string/text_navigation_battery_after" />
 
     <Button
         android:id="@+id/startButton"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="15dp"
+        android:layout_marginBottom="47dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="@color/mapboxGrayLight"
         android:enabled="false"
         android:text="@string/start_navigation"
         android:textColor="@color/mapboxWhite" />
+
+    <ImageView
+        android:id="@+id/add_image"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/add_banner" />
 
 </RelativeLayout>
